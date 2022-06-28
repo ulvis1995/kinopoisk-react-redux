@@ -34,3 +34,18 @@
     margin-left: 20px;
   }
 }
+.main-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: right;
+  margin-right: 50px;
+}
+
+.main-select-type, .main-select-genre {
+  width: 150px;
+  margin-right: 20px;
+}
+
+.pagination {
+  margin-bottom: 10px;
+}
