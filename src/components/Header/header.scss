@@ -1,0 +1,87 @@
+@import '~antd/dist/antd.css';
+
+.header-wrapper {
+  background: rgb(36, 36, 36);
+}
+
+.header {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  background: rgb(36, 36, 36);
+  font-size: 32px;
+  line-height: 36px;
+  color: #fff;
+}
+
+.header-menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.header-menu img {
+  width: 32px;
+  height: 32px;
+  padding-right: 5px;
+}
+
+.header-menu p {
+  margin: 0;
+  display: none;
+}
+
+@media (min-width: 360px) {
+  .header {
+    height: 60px;
+    justify-content: space-around;
+  }
+
+  .header-seach {
+    max-width: 320px;
+  }
+}
+
+@media (min-width: 500px) {
+  .header {
+    height: 80px;
+    justify-content: space-around;
+  }
+
+  .header-seach {
+    min-width: 300px;
+    max-width: 420px;
+  }
+}
+
+@media (min-width: 760px) {
+  .header {
+    height: 80px;
+    justify-content: space-around;
+  }
+
+  .header-menu p {
+    display: block;
+  }
+
+  .header-seach {
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 1000px) {
+  .header {
+    height: 100px;
+    justify-content: space-around;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+
+  .header-seach {
+    min-width: 600px;
+    max-width: 700px;
+  }
+}
