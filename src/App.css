@@ -1,7 +1,12 @@
-.content {
+.App {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   text-align: center;
-  height: 100vh;
+}
+
+@media (min-width: 360px) {
+  .content {
+    height: 100%;
+  }
 }
