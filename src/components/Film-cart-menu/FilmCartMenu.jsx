@@ -4,7 +4,7 @@ import './filmCartMenu.scss'
 
 function FilmCartMenu({id, nameRu, nameOriginal, poster, ratingKinopoisk, genres, type}) {
   return (
-    <div className='film-cart-menu' data-type={type}>
+    <div className='film-cart-menu' data-type={type} id={id}>
       <div className='film-cart-img-block'> 
         <img  className='film-cart-img' 
           src={poster} width='250px' height='375px' alt={nameRu}/>
