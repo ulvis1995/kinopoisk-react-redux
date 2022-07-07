@@ -9,7 +9,7 @@ import LoadFilters from '../../apiData/LoadFilters';
 import LoadMovie from '../../apiData/LoadMovie';
 import genresArray from "../../functions/array";
 
-function Main() {
+function Main({handleId}) {
   const [movie, setMovie] = useState([]);
   const [current, setCurrent] = useState(1);
   const [totalMovie, setTotal] = useState (400);
@@ -20,7 +20,6 @@ function Main() {
   const [typeMovie, setTypeMovie] = useState ('ALL');
   const [genreMovie, setGenreMovie] = useState ('');
   const [countryMovie, setCountryMovie] = useState ('');
-  const storGenre = localStorage.getItem('genre');
 
 
   const load = async()=>{
@@ -35,54 +34,48 @@ function Main() {
   useEffect ( () => {
     load();
   }, [current, typeMovie, genreMovie, countryMovie])
-   useEffect(() => {
-    localStorage.setItem('genre', JSON.stringify(genreMovie))
-  }, [genreMovie]);
-
-  useEffect (() => {
-    const items = JSON.parse(storGenre)
-    if (items) {
-      setGenreMovie(items)
-    }
-  }, []);
 
   const onChange = (page) => {
     setCurrent(page);
   };
 
+
+
   return (
     <div className='main-wrapper'>
       <div className='main-empty'></div>
-        <Filters genresArr={genresArr} 
-        countryArr={countryArr}
-        typeMovie={typeMovie}
-        setTypeMovie={setTypeMovie}
-        setGenreMovie={setGenreMovie}
-        setCountryMovie={setCountryMovie}
-        />
-        {movie.length !== 0 
-          ? <div className='main'>
-            {movie.map(item => 
-            <Link  to={`films/${item.kinopoiskId}`}
-              key={item.kinopoiskId+item.year}
-              >
-              <FilmCartMenu
-                nameRu={item.nameRu}
-                nameOriginal={item.nameOriginal}
-                genres={genresArray(item.genres)}
-                poster={item.posterUrlPreview}
-                ratingKinopoisk={item.ratingKinopoisk}
-                type={item.type}
-                id={item.kinopoiskId}/>
-            </Link>)}
-          </div>
-          : <MainNone/>}
-        <div className='main-empty-footer'></div>
-        {totalMovie>20 
-        ? <Pagination className='pagination'
-        current={current} onChange={onChange} total={totalMovie} 
-        defaultPageSize={20} showSizeChanger={false}/>
-        : ''}
+      <Filters 
+      genresArr={genresArr} 
+      countryArr={countryArr}
+      typeMovie={typeMovie}
+      setTypeMovie={setTypeMovie}
+      setGenreMovie={setGenreMovie}
+      setCountryMovie={setCountryMovie}
+      />
+      {movie.length !== 0 
+        ? <div className='main'>
+          {movie.map(item => 
+          <Link  to={`films/${item.kinopoiskId}`}
+            key={item.kinopoiskId+item.year}
+            >
+            <FilmCartMenu onClickid={handleId}
+              nameRu={item.nameRu}
+              nameOriginal={item.nameOriginal}
+              genres={genresArray(item.genres)}
+              poster={item.posterUrlPreview}
+              ratingKinopoisk={item.ratingKinopoisk}
+              type={item.type}
+              id={item.kinopoiskId}/>
+          </Link>)}
+        </div>
+        : <MainNone/>}
+      
+      {totalMovie>20 && movie.length !== 0
+      ? <Pagination className='pagination'
+      current={current} onChange={onChange} total={totalMovie} 
+      defaultPageSize={20} showSizeChanger={false}/>
+      : ''}
+      <div className='main-empty-footer'></div>
     </div>
   )
 };

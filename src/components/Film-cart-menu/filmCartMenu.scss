@@ -6,9 +6,13 @@
   width: 250px;
 }
 
+.film-cart-img-block {
+  line-height: 0;
+}
+
 .film-cart-point {
   position: relative;
-  top: -360px;
+  top: -350px;
   left: 8px;
   color: #fff;
   background: rgb(70, 69, 69);
@@ -19,7 +23,7 @@
 
 .film-cart-info {
   position: relative;
-  top: -20px;
+  top: 0;
   display: flex;
   flex-direction: column;
   font-size: 20px;
