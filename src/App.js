@@ -1,10 +1,11 @@
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
 import  Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
-import { Route, Routes } from 'react-router-dom';
 import MoviePage from './components/MoviePage/MoviePage';
-import { useState } from 'react';
+import Person from "./components/Person/Person";
 
 function App() {
   const [idFilm, setIdFilm] = useState();
@@ -19,7 +20,8 @@ function App() {
       <div className='content'>
         <Routes>
           <Route path='/' element={<Main handleId={handleId}/>} exact/>
-          <Route path={`/films/${idFilm}`} element={<MoviePage idFilm={idFilm} handleId={handleId}/>} exact/>
+          {/* <Route path={`/films/${idFilm}`} element={<MoviePage idFilm={idFilm} handleId={handleId}/>} exact/> */}
+          {/* <Route path={`/staff/${idPerson}`} element={<Person/>} exact/> */}
         </Routes>
       </div>
       <Footer />
