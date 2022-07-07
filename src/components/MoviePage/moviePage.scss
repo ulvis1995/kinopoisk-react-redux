@@ -17,6 +17,11 @@
   width: 100%;
 }
 
+.movie-page-main {
+  display: flex;
+  flex-direction: column;
+}
+
 .movie-page-image-block {
   display: flex;
   flex-direction: column;
@@ -130,6 +135,9 @@
 }
 
 @media (min-width: 580px) {
+  .movie-page-wrapper {
+    min-height: 100vh;
+  }
   .movie-rating {
     order: 1;
     justify-content: center;
@@ -149,8 +157,8 @@
 }
 
 @media (min-width: 760px) {
-  .movie-page-wrapper {
-    height: 100vh;
+  .movie-page-main {
+    height: 100%;
   }
   .movie-page {
     display: flex;
