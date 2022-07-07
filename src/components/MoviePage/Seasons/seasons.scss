@@ -1,0 +1,35 @@
+.film-season {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.film-season-start {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.film-season-start p {
+  margin: 8px 0;
+  padding:  0 10px;
+  font-size: 20px;
+  text-align: left;
+}
+
+.season-block {
+  display: flex;
+  flex-wrap: wrap;
+  flex-grow: 1;
+}
+
+.season-table {
+  margin: 0 10px;
+  width: 100%;
+}
+
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td, .ant-table tfoot > tr > th, .ant-table tfoot > tr > td  {
+  padding: 8px;
+}
+
+.ant-table-pagination.ant-pagination {
+  margin: 8px 0;
+}

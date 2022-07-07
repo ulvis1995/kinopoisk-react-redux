@@ -48,7 +48,7 @@ function Similars({idFilm, handleId, more}) {
             :<button className='button button-up' onClick={onClickSimilar}>&#10094;</button>}
           </div>
       {similarShow 
-        ?<div className='film-item film-slider'>
+        ?<div className='film-item film-slider-similar'>
           {similars.length>3 
             ?<a className="previous" onClick={onClickpreviousSlide}>&#10094;</a> 
             : ''}

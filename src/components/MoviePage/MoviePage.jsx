@@ -7,6 +7,7 @@ import token  from '../../apiData/token';
 import urlFilms from '../../apiData/urlFilms';
 import axios from 'axios';
 import MovieFilmAbout from './MovieFilmAbout';
+import MovieSeriesAbout from './MovieSeriesAbout';
 
 function MoviePage({idFilm, handleId}) {
   const [pageMId, setPageMovie] = useState([]);
@@ -97,15 +98,10 @@ function MoviePage({idFilm, handleId}) {
             </div>
           </div>
         </div>
-        <MovieFilmAbout idFilm={idFilm} handleId={handleId}/>
+        {pageMId.type === ('TV_SERIES' || 'TV_SHOW' || 'MINI_SERIES')
+        ? <MovieSeriesAbout idFilm={idFilm} handleId={handleId}/>
+        : <MovieFilmAbout idFilm={idFilm} handleId={handleId}/>}
       </div>
-      {/* {pageMId.type === ('TV_SERIES' || 'TV_SHOW' || 'MINI_SERIES')
-        ? <div className='movie-seasons'>
-            <h3>Количество сезонов: 5</h3>
-
-          </div>
-        : ''} */}
-        
       <div className='movie-page-empty-footer'></div>
     </div>
   )
