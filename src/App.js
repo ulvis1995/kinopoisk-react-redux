@@ -2,13 +2,12 @@ import './App.css';
 import  Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import MoviePage from './components/MoviePage/MoviePage';
 import { useState } from 'react';
 
 function App() {
   const [idFilm, setIdFilm] = useState();
-  const location = useLocation ()
 
   const handleId = (id) => {
     setIdFilm(id)
