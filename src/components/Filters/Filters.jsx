@@ -4,6 +4,13 @@ import { Select } from 'antd';
 const { Option } = Select;
 
 function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, setCountryMovie}) {
+  const filterType = [
+    {value: 'ALL', text: 'Все'},
+    {value: 'FILM', text: 'Фильмы'},
+    {value: 'TV_SHOW', text: 'ТВ-Шоу'},
+    {value: 'TV_SERIES', text: 'ТВ-сериалы'},
+    {value: 'MINI_SERIES', text: 'Мини-сериалы'}
+  ]
     
   const handleChange = (value) => {
     return setTypeMovie(value);
@@ -30,11 +37,8 @@ function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, setCountry
         placeholder="Тип (кино, сериал...)"
         onChange={handleChange}
       >
-        <Option value="ALL">Все</Option>
-        <Option value="FILM">Фильмы</Option>
-        <Option value="TV_SHOW">ТВ-Шоу</Option>
-        <Option value="TV_SERIES">ТВ-сериалы</Option>
-        <Option value="MINI_SERIES">Мини-сериалы</Option>
+        {filterType.map((item, index) => 
+          <Option value={item.value} key={index}>{item.text}</Option>)}
       </Select>
       <Select className='main-select-item'
         showSearch

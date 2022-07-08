@@ -1,56 +1,60 @@
 import { Link } from 'react-router-dom';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import FilmCartMenu from '../Film-cart-menu/FilmCartMenu';
 import './main.scss';
 import { Pagination } from 'antd';
 import MainNone from './MainNone';
 import Filters from '../Filters/Filters';
-import LoadFilters from '../../apiData/LoadFilters';
-import LoadMovie from '../../apiData/LoadMovie';
 import genresArray from "../../functions/array";
+import { setSortByCountry, setSortByGenre, setSortByType } from '../../redux/actions/filters';
+import { fetchFilters } from '../../redux/actions/filtersValue';
+import { fetchMovies, setCurrent } from '../../redux/actions/movieListParametr';
 
 function Main({handleId}) {
-  const [movie, setMovie] = useState([]);
-  const [current, setCurrent] = useState(1);
-  const [totalMovie, setTotal] = useState (400);
-  
-  const [genresArr, setGenresArr] = useState([]);
-  const [countryArr, setCountryArr] = useState([]);
-  
-  const [typeMovie, setTypeMovie] = useState ('ALL');
-  const [genreMovie, setGenreMovie] = useState ('');
-  const [countryMovie, setCountryMovie] = useState ('');
+  const dispatch = useDispatch();
+  const {type, genre, country} = useSelector(({filters}) => filters);
+  const {countryValue, genresValue} = useSelector(({filtersValue}) => filtersValue);
+  const {current, movie, totalMovie} = useSelector(({movieParametr}) => movieParametr);
 
+  React.useEffect (() => {
+    dispatch(fetchMovies(current, type, genre, country))
+  }, [current, type, genre, country]);
 
-  const load = async()=>{
-    const movie = await LoadMovie(current, typeMovie, genreMovie, countryMovie);
-    setMovie(movie.items)
-    setTotal(movie.total) 
-    const filt = await LoadFilters()
-    setGenresArr(filt.genres)
-    setCountryArr(filt.countres)
-  };
+  React.useEffect (() => {
+    dispatch(fetchFilters(countryValue, genresValue))
+  }, []);
 
-  useEffect ( () => {
-    load();
-  }, [current, typeMovie, genreMovie, countryMovie])
+  React.useEffect (() => {
+    dispatch(setSortByType(type, genre, country))
+  }, [type, genre, country]);
 
-  const onChange = (page) => {
-    setCurrent(page);
-  };
+  const onSelectType = React.useCallback ((type) => {
+    dispatch(setSortByType(type))
+  }, []);
 
+  const onSelectGenre = React.useCallback ((genre) => {
+    dispatch(setSortByGenre(genre))
+  }, []);
 
+  const onSelectCountry = React.useCallback ((country) => {
+    dispatch(setSortByCountry(country))
+  }, []);
+
+  const onSelectCurrent = React.useCallback ((current) => {
+    dispatch(setCurrent(current))
+  }, []);
 
   return (
     <div className='main-wrapper'>
       <div className='main-empty'></div>
       <Filters 
-      genresArr={genresArr} 
-      countryArr={countryArr}
-      typeMovie={typeMovie}
-      setTypeMovie={setTypeMovie}
-      setGenreMovie={setGenreMovie}
-      setCountryMovie={setCountryMovie}
+      genresArr={genresValue} 
+      countryArr={countryValue}
+      typeMovie={type}
+      setTypeMovie={onSelectType}
+      setGenreMovie={onSelectGenre}
+      setCountryMovie={onSelectCountry}
       />
       {movie.length !== 0 
         ? <div className='main'>
@@ -72,7 +76,7 @@ function Main({handleId}) {
       
       {totalMovie>20 && movie.length !== 0
       ? <Pagination className='pagination'
-      current={current} onChange={onChange} total={totalMovie} 
+      current={current} onChange={onSelectCurrent} total={totalMovie} 
       defaultPageSize={20} showSizeChanger={false}/>
       : ''}
       <div className='main-empty-footer'></div>
