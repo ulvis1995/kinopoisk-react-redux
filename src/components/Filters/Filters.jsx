@@ -3,7 +3,8 @@ import '../Main/main.scss';
 import { Select } from 'antd';
 const { Option } = Select;
 
-function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, setCountryMovie}) {
+function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, 
+  setCountryMovie, genre, type, country}) {
   const filterType = [
     {value: 'ALL', text: 'Все'},
     {value: 'FILM', text: 'Фильмы'},
@@ -12,7 +13,7 @@ function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, setCountry
     {value: 'MINI_SERIES', text: 'Мини-сериалы'}
   ]
     
-  const handleChange = (value) => {
+  const handleChangeType = (value) => {
     return setTypeMovie(value);
   };
 
@@ -29,19 +30,23 @@ function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, setCountry
       <Select className='main-select-item'
       placeholder="Жанр" allowClear
       onChange={handleChangeGenre}
+      value={genre} 
+      onClear={()=> handleChangeGenre(null)}
       >
         {genresArr && genresArr.map((item, index) => 
           <Option value={item.id} key={index}>{item.genre}</Option>)}
       </Select>
       <Select className='main-select-item'
         placeholder="Тип (кино, сериал...)"
-        onChange={handleChange}
+        onChange={handleChangeType}  allowClear
+        onClear={()=> handleChangeType(null)}
+        value={type}
       >
         {filterType.map((item, index) => 
           <Option value={item.value} key={index}>{item.text}</Option>)}
       </Select>
       <Select className='main-select-item'
-        showSearch
+        showSearch value={country}
         optionFilterProp="children"
         filterOption={(input, option) => option.children.includes(input)}
         filterSort={(optionA, optionB) =>
@@ -49,6 +54,7 @@ function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, setCountry
         }
         placeholder="Страна" allowClear
         onChange={handleChangeCountry}
+        onClear={()=> handleChangeCountry(null)}
       >
         {countryArr && countryArr.map((item, index) => 
           <Option value={item.id} key={index}>{item.country}</Option>)}

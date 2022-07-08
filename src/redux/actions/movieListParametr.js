@@ -19,7 +19,8 @@ export const setTotalMovie = (totalMovie) => ({
 
 export const fetchMovies = (current, type, genre, country) => (dispatch) => {
 
-  axios.get(`${urlFilms}/films?page=${current}&type=${type}&genres=${genre}&countries=${country}`,
+  axios.get(
+    `${urlFilms}/films?page=${current}&type=${type ? type : ''}&genres=${genre ? genre : ''}&countries=${country ? country : ''}`,
     {headers: {
       'X-API-KEY': `${token}`,
       'Content-Type': 'application/json'}})

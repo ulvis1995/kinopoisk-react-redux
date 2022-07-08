@@ -1,7 +1,7 @@
 const initialState = {
-  type: 'ALL',
-  genre: '',
-  country: '',
+  type: null,
+  genre: null,
+  country: null,
 };
 
 const filters = (state = initialState, action) => {

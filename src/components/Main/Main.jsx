@@ -51,7 +51,8 @@ function Main({handleId}) {
       <Filters 
       genresArr={genresValue} 
       countryArr={countryValue}
-      typeMovie={type}
+      typeMovie={type} genre={genre}
+      type={type} country={country}
       setTypeMovie={onSelectType}
       setGenreMovie={onSelectGenre}
       setCountryMovie={onSelectCountry}
