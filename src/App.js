@@ -20,7 +20,7 @@ function App() {
       <div className='content'>
         <Routes>
           <Route path='/' element={<Main handleId={handleId}/>} exact/>
-          {/* <Route path={`/films/${idFilm}`} element={<MoviePage idFilm={idFilm} handleId={handleId}/>} exact/> */}
+          <Route path={`/films/${idFilm}`} element={<MoviePage idFilm={idFilm} handleId={handleId}/>} exact/>
           {/* <Route path={`/staff/${idPerson}`} element={<Person/>} exact/> */}
         </Routes>
       </div>
