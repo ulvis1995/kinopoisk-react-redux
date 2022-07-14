@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux';
 import FilmCartMenu from '../Film-cart-menu/FilmCartMenu';
 import './main.scss';
 import { Pagination } from 'antd';
@@ -10,16 +10,17 @@ import genresArray from "../../functions/array";
 import { setSortByCountry, setSortByGenre, setSortByType } from '../../redux/actions/filters';
 import { fetchFilters } from '../../redux/actions/filtersValue';
 import { fetchMovies, setCurrent } from '../../redux/actions/movieListParametr';
+import { setMovieId } from '../../redux/actions/movieId';
 
-function Main({handleId}) {
+function Main() {
   const dispatch = useDispatch();
-  const {type, genre, country} = useSelector(({filters}) => filters);
+  const {type, genre, country, search} = useSelector(({filters}) => filters);
   const {countryValue, genresValue} = useSelector(({filtersValue}) => filtersValue);
-  const {current, movie, totalMovie} = useSelector(({movieParametr}) => movieParametr);
+  const {current, movie, totalMovie} = useSelector(({movieListParametr}) => movieListParametr);
 
   React.useEffect (() => {
-    dispatch(fetchMovies(current, type, genre, country))
-  }, [current, type, genre, country]);
+    dispatch(fetchMovies(current, type, genre, country, search))
+  }, [current, type, genre, country, search]);
 
   React.useEffect (() => {
     dispatch(fetchFilters(countryValue, genresValue))
@@ -45,6 +46,10 @@ function Main({handleId}) {
     dispatch(setCurrent(current))
   }, []);
 
+  const onClickid = React.useCallback ((id) => {
+    dispatch(setMovieId(id))
+  }, []);
+
   return (
     <div className='main-wrapper'>
       <div className='main-empty'></div>
@@ -61,9 +66,9 @@ function Main({handleId}) {
         ? <div className='main'>
           {movie.map(item => 
           <Link  to={`films/${item.kinopoiskId}`}
-            key={item.kinopoiskId+item.year}
+            key={`${item.kinopoiskId}_${item.year}`}
             >
-            <FilmCartMenu onClickid={handleId}
+            <FilmCartMenu onClickid={onClickid}
               nameRu={item.nameRu}
               nameOriginal={item.nameOriginal}
               genres={genresArray(item.genres)}

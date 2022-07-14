@@ -1,11 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './award.scss';
 import { Table } from 'antd';
-import awards from './awardLoad';
+import { useDispatch, useSelector} from 'react-redux';
+import { fetchAwards, setAwardShow, setStaffId } from '../../../redux/actions/infoAboutFilm';
+import { Link } from 'react-router-dom';
 
-function AwardBlock({ idFilm, more}) {
-  const [awardShow, setShowAw] = useState(false);
-  const [awardsFilm, setAwards] = useState([]);
+function AwardBlock({ id}) {  
+  const dispatch = useDispatch();
+  const [awards, setShowAw] = useState(false);
+  const {awardShow, awardsFilm} = useSelector(({infoAboutFilm}) => infoAboutFilm);
 
   const dataSource = awardsFilm.map ((item, index) => {
     return item = {
@@ -13,7 +16,7 @@ function AwardBlock({ idFilm, more}) {
       numder: index + 1,
       award: item.name,
       nomination: item.nominationName,
-      person: item.persons.map(i => i.nameRu).join(', '),
+      person: item.persons,
       result: item.win ? 'победа' : 'номинация'
     }
   })
@@ -38,6 +41,18 @@ function AwardBlock({ idFilm, more}) {
       title: 'Номинант',
       dataIndex: 'person',
       key: 'person',
+      render: (_, data) => {
+        const onClick = (idStaff) => {
+          dispatch(setStaffId(idStaff))
+        }
+        return data.person.map(i => {
+          return <Link to={{pathname: `/staff/${i.kinopoiskId}`}}
+                      className='item-name' key={i.kinopoiskId}
+                      onClick={() => onClick(i.kinopoiskId)}>
+                    {`${i.nameRu}  `}
+                  </Link>
+        })
+      }
     },
     {
       title: 'Результат',
@@ -52,35 +67,34 @@ function AwardBlock({ idFilm, more}) {
   };
   
   const onClickAward = () => {
-    setShowAw(awardShow ? false : true);
-  }
-  
-  const loadAward = async () => {
-    const award = await awards (idFilm);
-    setAwards(award);
-  }
+    setShowAw(awards ? false : true);
+  };
 
-  useEffect (() => {
-    loadAward();
-  }, [more]);
+  React.useEffect (() => {
+    dispatch(setAwardShow(awards))
+  }, [awards]);
 
-  return (
-    awardsFilm.length > 0 
-      ? <div className='film-award'>
-          <div className='film-award-start'><p>Количество наград: {awardsFilm.length}</p>
-          {awardShow === false 
-            ?<button className='button button-down' onClick={onClickAward}>&#10094;</button>
-            :<button className='button button-up' onClick={onClickAward}>&#10094;</button>}
-          </div>
-          {awardShow 
-            ? <div className='award-block'>
-                <Table dataSource={dataSource} columns={columns}
-                  pagination={pagination}
-                  className='award-table'/>
-              </div>
-            : ''}
-      </div>
-      : ''
+  React.useEffect (() => {
+    dispatch(fetchAwards(id))
+  }, [awardShow]);
+
+  return ( 
+    <div className='film-award'>
+        <div className='film-award-start'>
+        <p>Награды</p>
+        {awardShow === false 
+          ?<button className='button button-down' onClick={onClickAward}>&#10094;</button>
+          :<button className='button button-up' onClick={onClickAward}>&#10094;</button>}
+        </div>
+        {awardShow 
+          ? <div className='award-block'>
+              <p>Количество: {awardsFilm.length}</p>
+              <Table dataSource={dataSource} columns={columns}
+                pagination={pagination} bordered={true}
+                className='award-table'/>
+            </div>
+          : ''}
+    </div>
 
     
   )

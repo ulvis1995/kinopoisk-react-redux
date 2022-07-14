@@ -1,17 +1,11 @@
 import React from 'react';
 import '../Main/main.scss';
 import { Select } from 'antd';
+import { filterType } from './filterArray';
 const { Option } = Select;
 
 function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, 
   setCountryMovie, genre, type, country}) {
-  const filterType = [
-    {value: 'ALL', text: 'Все'},
-    {value: 'FILM', text: 'Фильмы'},
-    {value: 'TV_SHOW', text: 'ТВ-Шоу'},
-    {value: 'TV_SERIES', text: 'ТВ-сериалы'},
-    {value: 'MINI_SERIES', text: 'Мини-сериалы'}
-  ]
     
   const handleChangeType = (value) => {
     return setTypeMovie(value);

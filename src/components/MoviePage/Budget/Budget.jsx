@@ -2,17 +2,17 @@ import React, {useEffect, useState} from 'react';
 import './budget.scss'
 import budgetMovie from './budgetLoad';
 
-function Budget({idFilm, more}) {
+function Budget({id, movieAbout}) {
   const [budget, setBox] = useState([]);
 
   const loadBudget = async () => {
-    const box = await budgetMovie(idFilm);
+    const box = await budgetMovie(id);
     setBox(box);
   }
 
   useEffect(() => {
     loadBudget()
-  }, [more])
+  }, [movieAbout])
 
   const boxBudget = budget.findIndex(i => i.type === 'BUDGET');
   const boxWorld = budget.findIndex(i => i.type === 'WORLD');

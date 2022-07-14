@@ -1,27 +1,37 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './filmAbout.scss';
-// import './AwardBlock/award.scss';
 import Slider from './ImageSlider/Slider';
 import AwardBlock from './AwardBlock/AwardBlock';
 import Budget from './Budget/Budget';
 import Similars from './Similars/Similars';
+import SeasonsInfo from './Seasons/SeasonsInfo';
+import { useDispatch, useSelector} from 'react-redux';
+import { setMovieAbout } from '../../redux/actions/movieId';
+import Staff from './Staff/Staff';
 
-function MovieFilmAbout({idFilm, handleId}) {
-  const [more, setMore] = useState(false);
+function MovieFilmAbout({id, typeFilm}) {
+  const dispatch = useDispatch();
+  const {movieAbout} = useSelector(({movieId}) => movieId)
 
-  const onClickMore = () => {
-    setMore(true);
-  }
+  const onClickMore = React.useCallback (() => {
+    dispatch(setMovieAbout(true))
+  }, [id]);
+
+  React.useEffect(()=>{
+    return ()=> {dispatch(setMovieAbout(false))}
+  },[id])
 
   return (
   <div className='film-about'>
-    {more 
+    {movieAbout 
     ? <div className='film-info'>
         <div className='film-info-list'>
-          {/* <Slider idFilm={idFilm} more={more}/>
-          <AwardBlock idFilm={idFilm} more={more}/>
-          <Budget idFilm={idFilm} more={more}/> */}
-          {/* <Similars idFilm={idFilm} handleId={handleId} more={more}/> */}
+          <Staff id={id} movieAbout={movieAbout}/>
+          {/* {typeFilm !== 'FILM' ? <SeasonsInfo id={id} movieAbout={movieAbout}/> : null}  */}
+          {/* <Slider id={id} movieAbout={movieAbout}/> */}
+          {/* <AwardBlock id={id} movieAbout={movieAbout}/> */}
+          {/* {typeFilm === 'FILM' ? <Budget id={id} movieAbout={movieAbout}/> : null} */}
+          {/* <Similars id={id} movieAbout={movieAbout}/> */}
         </div>
       </div>
     :<button className='film-button'

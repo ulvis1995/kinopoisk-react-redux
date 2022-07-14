@@ -1,41 +1,37 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import './seasons.scss';
 import { Table } from 'antd';
-import seasons from './seasonsLoad';
+import { useDispatch, useSelector} from 'react-redux';
+import { fetchSeasonList, setSeasonInfo } from '../../../redux/actions/infoAboutFilm';
 
-function SeasonsInfo({idFilm, more}) {  
-  const [seasonsShow, setShowSeas] = useState(false);
-  const [seasonsList, setSeason] = useState([]);  
+function SeasonsInfo({id, movieAbout}) {
+  const dispatch = useDispatch();
+  const [seasonStatus, setStatus] = useState (false); 
+  const {seasonInfo, seasonsList} = useSelector(({infoAboutFilm}) => infoAboutFilm);
+
+  const numberOfEpisodes = seasonsList?.reduce((sum, season) => {
+    return sum + season?.episodes?.length
+    }, 0);
 
   const onClickSeason = () => {
-    setShowSeas(seasonsShow ? false : true);
+    setStatus(seasonStatus ? false : true)
   }
+  
+  React.useEffect (() => {
+    dispatch(setSeasonInfo(seasonStatus))
+  }, [seasonStatus]);
 
-  const loadSeason = async () => {
-    const season = await seasons (idFilm);
-    setSeason (season);
-  }
-
-  useEffect (() => {
-    loadSeason();
-  }, [more]);
-
-  // const dataSource = seasonsList.episodes.map ((item, index) => {
-  //   return item = {
-  //     key: item.index,
-  //     numder: item.index + 1,
-  //     name: `${item.nameRu !== null ? item.nameRu : ''}/${item.nameEn !== null ? item.nameEn : ''}`,
-  //     release: new Date(item.releaseDate).toLocaleDateString()
-  //   }
-  // })
+  React.useEffect (() => {
+    dispatch(fetchSeasonList(id))
+  }, [seasonInfo]);
 
   const dataSource = (obj) => {
     return obj.episodes.map((item, index) => {
       return item = {
         key: index,
         number: item.episodeNumber,
-        name: `${item.nameRu !== null ? item.nameRu : ''}/${item.nameEn !== null ? item.nameEn : ''}`,
-        release:item.releaseDate
+        name: `${item.nameRu !== null ? item.nameRu : ''}  ${item.nameEn !== null ? item.nameEn : ''}`,
+        release: new Date(item.releaseDate).toLocaleDateString()
       }
     })
   }
@@ -43,8 +39,8 @@ function SeasonsInfo({idFilm, more}) {
   const columns = [
     {
       title: 'N',
-      dataIndex: 'numder',
-      key: 'numder',
+      dataIndex: 'number',
+      key: 'number',
     },
     {
       title: 'Название серии',
@@ -59,27 +55,27 @@ function SeasonsInfo({idFilm, more}) {
   ];
 
   return (
-    seasonsList.length > 0 
-      ? <div className='film-season'>
-          <div className='film-season-start'><p>Сезоны  {seasonsList.length}</p>
-          {seasonsShow === false 
-            ?<button className='button button-down' onClick={onClickSeason}>&#10094;</button>
-            :<button className='button button-up' onClick={onClickSeason}>&#10094;</button>}
-          </div>
-          {seasonsShow 
-            ? <div className='season-block'>
-                {seasonsList.map(season => (
-                  <div className='season-block-item'>
-                  <p>Сезон {season.number} - количество серий {season.episodes.length}</p>
-                  <Table dataSource={dataSource(season)} columns={columns}
-                    className='season-table'
-                    pagination={false}/>
-                </div>
-                ))}
+     <div className='film-season'>
+        <div className='film-season-start'>
+        <p>Подробнее о сезонах</p>
+        {seasonInfo === false 
+          ?<button className='button button-down' onClick={onClickSeason}>&#10094;</button>
+          :<button className='button button-up' onClick={onClickSeason}>&#10094;</button>}
+        </div>
+        {seasonInfo 
+          ? <div className='season-block'>
+              <p>Сезоны  {seasonsList.length} - количество серий {numberOfEpisodes}</p>
+              {seasonsList.map(season => (
+                <div className='season-block-item' key={`${season.number}_${season.episodes.length}`}>
+                <p>Сезон {season.number} - количество серий {season.episodes.length}</p>
+                <Table dataSource={dataSource(season)} columns={columns}
+                  className='season-table' 
+                  pagination={false}/>
               </div>
-            : ''}
+              ))}
+            </div>
+          : ''}
       </div>
-      : ''
   )
 };
 

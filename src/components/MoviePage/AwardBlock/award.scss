@@ -21,3 +21,12 @@
 .ant-table-pagination.ant-pagination {
   margin: 8px 0;
 }
+
+.item-name {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.item-name:hover {
+  color: rgb(249, 208, 71);
+}

@@ -2,28 +2,18 @@ import React from 'react';
 import './moviePage.scss';
 import genresArray from "../../functions/array";
 import countryArray from '../../functions/arrayCountre';
-import { useEffect, useState } from 'react';
-import token  from '../../apiData/token';
-import urlFilms from '../../apiData/urlFilms';
-import axios from 'axios';
 import MovieFilmAbout from './MovieFilmAbout';
-import MovieSeriesAbout from './MovieSeriesAbout';
 
-function MoviePage({idFilm, handleId}) {
-  const [pageMId, setPageMovie] = useState([]);
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchMoviePage } from '../../redux/actions/movieId';
 
-  useEffect (() => {
-    const pageMovie = async () => {
-      const response = await axios.get(
-        `${urlFilms}/films/${idFilm}`,
-        {headers: {
-          'X-API-KEY': `${token}`,
-          'Content-Type': 'application/json'}}
-      )
-      setPageMovie(response.data)
-    };
-    pageMovie();
-  }, [idFilm]);
+function MoviePage() {
+  const dispatch = useDispatch();
+  const {id, moviePage} = useSelector(({movieId}) => movieId);
+
+  React.useEffect (() => {
+    dispatch(fetchMoviePage(id))
+  }, [id]);
 
   return (
     <div className='movie-page-wrapper'>
@@ -31,76 +21,74 @@ function MoviePage({idFilm, handleId}) {
       <div className='movie-page-main'>
         <div className='movie-page' >
           <div className='movie-page-image-block'>
-            <img className='movie-page-img' src={pageMId.posterUrl}
-              alt={`Изображение: ${pageMId.nameRu}`} width='320px' />
+            <img className='movie-page-img' src={moviePage.posterUrl}
+              alt={`Изображение: ${moviePage.nameRu}`} width='320px' />
               <div className='movie-page-info'>
-                <p className='movie-page-name'>{pageMId.nameRu}/{pageMId.nameOriginal}</p>
-                <p className='movie-page-genre'>{genresArray(pageMId.genres)}</p>
+                <p className='movie-page-name'>{moviePage.nameRu}/{moviePage.nameOriginal}</p>
+                <p className='movie-page-genre'>{genresArray(moviePage.genres)}</p>
               </div>
           </div>
           <div className='movie-page-textcontent'>
             <div className='movie-rating'>
-              {pageMId.ratingKinopoisk 
+              {moviePage.ratingKinopoisk 
                 ? <div className='movie-rating-item'>
-                  <p>{pageMId.ratingKinopoisk}</p>
-                  <span>{pageMId.ratingKinopoiskVoteCount} оценки</span>
+                  <p>{moviePage.ratingKinopoisk}</p>
+                  <span>{moviePage.ratingKinopoiskVoteCount} оценки</span>
                 </div>
                 : <div className='movie-rating-item'>
                     <p>Рейтинг отсутствует</p>
                   </div>}
-              {pageMId.ratingImdb 
+              {moviePage.ratingImdb 
                 ? <div className='movie-rating-item'>
-                    <p>{pageMId.ratingImdb} imdb</p>
-                    <span>{pageMId.ratingImdbVoteCount} оценки</span>
+                    <p>{moviePage.ratingImdb} imdb</p>
+                    <span>{moviePage.ratingImdbVoteCount} оценки</span>
                   </div>
                 : <div className='movie-rating-item'>
                     <p>Рейтинг отсутствует</p>
                   </div>}    
             </div>
-            <h2 className='slogan'>{pageMId.slogan}</h2>
+            <h2 className='slogan'>{moviePage.slogan}</h2>
             <div className='movie-description'>
-              <p>{(pageMId.description === null && pageMId.editorAnnotation === null )
+              <p>{(moviePage.description === null && moviePage.editorAnnotation === null )
                     ? ''
-                    : `${pageMId.description !== null ? pageMId.description : ''} 
-                        ${pageMId.editorAnnotation !== null ? pageMId.editorAnnotation : ''}`}
+                    : `${moviePage.description !== null ? moviePage.description : ''} 
+                        ${moviePage.editorAnnotation !== null ? moviePage.editorAnnotation : ''}`}
               </p>
             </div>
             <div className='movie-stats'>
               <div className='movie-stats-item'>
                 <span>Тип</span>
-                <p>{pageMId.type}</p>
+                <p>{moviePage.type}</p>
               </div>
               <div className='movie-stats-item'>
                 <span>Страна</span>
-                <p>{countryArray(pageMId.countries)}</p>
+                <p>{countryArray(moviePage.countries)}</p>
               </div>
-              {pageMId.ratingAgeLimits !== null
+              {moviePage.ratingAgeLimits !== null
                 ? <div className='movie-stats-item'>
                     <span>Ценз</span>
-                    <p>{pageMId.ratingAgeLimits}</p>
+                    <p>{moviePage.ratingAgeLimits}</p>
                   </div>
                 : ''}
-              {pageMId.type === 'FILM' 
+              {moviePage.type === 'FILM' 
                 ?<div className='movie-stats-item'>
                   <span>Год выпуска</span>
-                  <p>{pageMId.year}</p>
+                  <p>{moviePage.year}</p>
                 </div>
                 : ''}
-              {pageMId.type === ('TV_SERIES' || 'TV_SHOW' || 'MINI_SERIES') 
+              {moviePage.type === ('TV_SERIES' || 'TV_SHOW' || 'MINI_SERIES') 
                 ?<div className='movie-stats-item'>
                   <span>Годы выпуска</span>
-                  <p>{pageMId.startYear}-{pageMId.endYear ? pageMId.endYear : ''}</p>
+                  <p>{moviePage.startYear}-{moviePage.endYear ? moviePage.endYear : ''}</p>
                 </div>
                 : <div className='movie-stats-item'>
                     <span>Длительность</span>
-                    <p>{pageMId.filmLength !== null ? pageMId.filmLength : '-'}</p>
+                    <p>{moviePage.filmLength !== null ? moviePage.filmLength : '-'}</p>
                   </div>}
             </div>
           </div>
         </div>
-        {pageMId.type === ('TV_SERIES' || 'TV_SHOW' || 'MINI_SERIES')
-        ? <MovieSeriesAbout idFilm={idFilm} handleId={handleId}/>
-        : <MovieFilmAbout idFilm={idFilm} handleId={handleId}/>}
+        <MovieFilmAbout id={id} typeFilm={moviePage.type}/>
       </div>
       <div className='movie-page-empty-footer'></div>
     </div>
