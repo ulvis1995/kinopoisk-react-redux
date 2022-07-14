@@ -1,12 +1,13 @@
 import React from 'react';
-import './filmCartMenu.scss'
+import './filmCartMenu.scss';
 
 
 function FilmCartMenu({id, nameRu, nameOriginal, poster, ratingKinopoisk, genres, type, onClickid}) {
   const returnId = () => {
     const idFilm = id
     return onClickid(idFilm);
-  }
+  };
+  
   return (
     <div className='film-cart-menu' data-type={type} id={id}
     onClick={returnId}>
@@ -20,7 +21,7 @@ function FilmCartMenu({id, nameRu, nameOriginal, poster, ratingKinopoisk, genres
           </span>}
       </div>
       <div className='film-cart-info'>
-        <p className='film-cart-name'>{nameRu}/{nameOriginal}</p>
+        <p className='film-cart-name'>{nameRu}{nameRu && nameOriginal ? '/' : ''}{nameOriginal}</p>
         {genres === undefined ? '' :<p className='film-cart-genre'>{genres}</p>}
       </div>
     </div>

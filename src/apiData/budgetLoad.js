@@ -1,5 +1,5 @@
-import token  from '../../../apiData/token';
-import urlFilms from '../../../apiData/urlFilms';
+import token  from './token';
+import urlFilms from './urlFilms';
 import axios from 'axios';
 
 const budgetMovie = async (id) => {

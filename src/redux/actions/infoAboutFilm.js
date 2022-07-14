@@ -80,19 +80,3 @@ export const fetchBox = (id) => (dispatch) => {
         dispatch(setBox(data.items))
       })
 };
-
-export const setStaffId = (staffId) => ({
-  type: 'SET_STAFF_ID',
-  payload: staffId,
-});
-
-// export const fetchStaff = (staffId) => (dispatch) => {
-
-//   axios.get(`${urlFilms}/films/${staffId}/box_office`,
-//     {headers: {
-//       'X-API-KEY': `${token}`,
-//       'Content-Type': 'application/json'}})
-//       .then(({data}) => {
-//         dispatch(setBox(data.items))
-//       })
-// };

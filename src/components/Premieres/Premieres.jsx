@@ -1,27 +1,28 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import FiltersPremier from '../Filters/FiltersPremier';
 import { useSelector, useDispatch } from 'react-redux';
-import { setMonth, setYear } from '../../redux/actions/filters';
+
 import '../Main/main.scss';
+import FiltersPremier from '../Filters/FiltersPremier';
 import MainNone from '../Main/MainNone';
 import genresArray from "../../functions/array";
-import { Pagination } from 'antd';
 import FilmCartMenu from '../Film-cart-menu/FilmCartMenu';
-import { fetchPremiers, setPremPage } from '../../redux/actions/movieListParametr';
+
+import { setMonth, setYear } from '../../redux/actions/filters';
+import { fetchPremiers, setPremPage } from '../../redux/actions/premieres';
 import { setMovieId } from '../../redux/actions/movieId';
+
+import { Pagination } from 'antd';
 
 function Premieres({activeLink}) {
   const dispatch = useDispatch();
   const {month, year} = useSelector(({filters}) => filters);
-  const {premieres, pagePrem, totalPremiers} = useSelector (({movieListParametr}) => movieListParametr);
+  const {premieres, pagePrem, totalPremiers} = useSelector (({premieres}) => premieres);
 
   const premieresArr = []
   for (let i=0; i < premieres.length; i+=20) {
     premieresArr.push(premieres.slice(i, i + 20))
   };
-
-  console.log(premieresArr)
 
   const onSelectMonth = React.useCallback ((month) => {
     dispatch(setMonth(month))

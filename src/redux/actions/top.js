@@ -25,7 +25,6 @@ export const fetchTop = (page, nameTop) => (dispatch) => {
       'X-API-KEY': `${token}`,
       'Content-Type': 'application/json'}})
       .then(({data}) => {
-        console.log(data)
         dispatch(setTotalTop(data.pagesCount * 20))
         dispatch(setTopList(data.films))
       })

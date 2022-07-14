@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
-import './award.scss';
-import { Table } from 'antd';
 import { useDispatch, useSelector} from 'react-redux';
-import { fetchAwards, setAwardShow, setStaffId } from '../../../redux/actions/infoAboutFilm';
 import { Link } from 'react-router-dom';
+
+import './award.scss';
+
+import { fetchAwards, setAwardShow } from '../../../redux/actions/infoAboutFilm';
+import { setStaffId } from '../../../redux/actions/movieId';
+
+import { Table } from 'antd';
 
 function AwardBlock({ id}) {  
   const dispatch = useDispatch();
@@ -80,23 +84,21 @@ function AwardBlock({ id}) {
 
   return ( 
     <div className='film-award'>
-        <div className='film-award-start'>
-        <p>Награды</p>
-        {awardShow === false 
-          ?<button className='button button-down' onClick={onClickAward}>&#10094;</button>
-          :<button className='button button-up' onClick={onClickAward}>&#10094;</button>}
-        </div>
-        {awardShow 
-          ? <div className='award-block'>
-              <p>Количество: {awardsFilm.length}</p>
-              <Table dataSource={dataSource} columns={columns}
-                pagination={pagination} bordered={true}
-                className='award-table'/>
-            </div>
-          : ''}
+      <div className='film-award-start'>
+      <p>Награды</p>
+      {awardShow === false 
+        ?<button className='button button-down' onClick={onClickAward}>&#10094;</button>
+        :<button className='button button-up' onClick={onClickAward}>&#10094;</button>}
+      </div>
+      {awardShow 
+        ? <div className='award-block'>
+            <p>Количество: {awardsFilm.length}</p>
+            <Table dataSource={dataSource} columns={columns}
+              pagination={pagination} bordered={true}
+              className='award-table'/>
+          </div>
+        : ''}
     </div>
-
-    
   )
 };
 

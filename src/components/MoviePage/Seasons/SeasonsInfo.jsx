@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import './seasons.scss';
-import { Table } from 'antd';
 import { useDispatch, useSelector} from 'react-redux';
+
+import './seasons.scss';
 import { fetchSeasonList, setSeasonInfo } from '../../../redux/actions/infoAboutFilm';
 
-function SeasonsInfo({id, movieAbout}) {
+import { Table } from 'antd';
+
+function SeasonsInfo({id}) {
   const dispatch = useDispatch();
   const [seasonStatus, setStatus] = useState (false); 
   const {seasonInfo, seasonsList} = useSelector(({infoAboutFilm}) => infoAboutFilm);
@@ -15,7 +17,7 @@ function SeasonsInfo({id, movieAbout}) {
 
   const onClickSeason = () => {
     setStatus(seasonStatus ? false : true)
-  }
+  };
   
   React.useEffect (() => {
     dispatch(setSeasonInfo(seasonStatus))
@@ -34,7 +36,7 @@ function SeasonsInfo({id, movieAbout}) {
         release: new Date(item.releaseDate).toLocaleDateString()
       }
     })
-  }
+  };
 
   const columns = [
     {

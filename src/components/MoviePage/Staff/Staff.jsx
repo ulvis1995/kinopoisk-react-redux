@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+
 import './staff.scss';
-import staffLoad from './loadStaff';
-import { setStaffId } from '../../../redux/actions/infoAboutFilm';
+import staffLoad from '../../../apiData/loadStaff';
+import { setStaffId } from "../../../redux/actions/movieId";
+
 import { Pagination } from 'antd';
 
 function Staff({id}) {

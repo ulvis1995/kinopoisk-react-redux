@@ -1,12 +1,15 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import FilmCartMenu from '../Film-cart-menu/FilmCartMenu';
+
 import './main.scss';
-import { Pagination } from 'antd';
+import FilmCartMenu from '../Film-cart-menu/FilmCartMenu';
 import MainNone from './MainNone';
 import Filters from '../Filters/Filters';
 import genresArray from "../../functions/array";
+
+import { Pagination } from 'antd';
+
 import { setSortByCountry, setSortByGenre, setSortByType } from '../../redux/actions/filters';
 import { fetchFilters } from '../../redux/actions/filtersValue';
 import { fetchMovies, setCurrent } from '../../redux/actions/movieListParametr';
@@ -19,7 +22,7 @@ function Main() {
   const {current, movie, totalMovie} = useSelector(({movieListParametr}) => movieListParametr);
 
   React.useEffect (() => {
-    dispatch(fetchMovies(current, type, genre, country, search))
+    dispatch(fetchMovies(current, type, genre, country, search));
   }, [current, type, genre, country, search]);
 
   React.useEffect (() => {
@@ -54,14 +57,13 @@ function Main() {
     <div className='main-wrapper'>
       <div className='main-empty'></div>
       <Filters 
-      genresArr={genresValue} 
-      countryArr={countryValue}
-      typeMovie={type} genre={genre}
-      type={type} country={country}
-      setTypeMovie={onSelectType}
-      setGenreMovie={onSelectGenre}
-      setCountryMovie={onSelectCountry}
-      />
+        genresArr={genresValue} 
+        countryArr={countryValue}
+        typeMovie={type} genre={genre}
+        type={type} country={country}
+        setTypeMovie={onSelectType}
+        setGenreMovie={onSelectGenre}
+        setCountryMovie={onSelectCountry}/>
       {movie.length !== 0 
         ? <div className='main'>
           {movie.map(item => 
@@ -79,12 +81,11 @@ function Main() {
           </Link>)}
         </div>
         : <MainNone/>}
-      
       {totalMovie>20 && movie.length !== 0
-      ? <Pagination className='pagination'
-      current={current} onChange={onSelectCurrent} total={totalMovie} 
-      defaultPageSize={20} showSizeChanger={false}/>
-      : ''}
+        ? <Pagination className='pagination'
+        current={current} onChange={onSelectCurrent} total={totalMovie} 
+        defaultPageSize={20} showSizeChanger={false}/>
+        : ''}
       <div className='main-empty-footer'></div>
     </div>
   )

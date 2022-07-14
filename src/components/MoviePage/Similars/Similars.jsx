@@ -1,12 +1,13 @@
-import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import FilmCartMenu from '../../Film-cart-menu/FilmCartMenu';
-import similar from './similar';
-import './similar.scss';
+import { Link } from 'react-router-dom';
 import { useDispatch} from 'react-redux';
+
+import './similar.scss';
+import FilmCartMenu from '../../Film-cart-menu/FilmCartMenu';
+import similar from '../../../apiData/similar';
 import { setMovieId } from '../../../redux/actions/movieId';
 
-function Similars({id, movieAbout}) {  
+function Similars({id}) {  
   const dispatch = useDispatch();
   const [similarShow, setShowAw] = useState(false);
   const [similars, setSimilar] = useState ([]);
@@ -36,7 +37,7 @@ function Similars({id, movieAbout}) {
 
   useEffect (() => {
     loadSimilars()
-  }, [ movieAbout, similarShow]);
+  }, [ similarShow]);
 
   const onClickSimilar = () => {
     setShowAw(similarShow ? false : true);
