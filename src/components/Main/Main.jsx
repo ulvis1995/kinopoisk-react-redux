@@ -11,12 +11,14 @@ import { setSortByCountry, setSortByGenre, setSortByType } from '../../redux/act
 import { fetchFilters } from '../../redux/actions/filtersValue';
 import { fetchMovies, setCurrent } from '../../redux/actions/movieListParametr';
 import { setMovieId } from '../../redux/actions/movieId';
+import LoadingBlock from '../LoadingBlock/LoadingBlock';
 
 function Main() {
   const dispatch = useDispatch();
   const {type, genre, country, search} = useSelector(({filters}) => filters);
   const {countryValue, genresValue} = useSelector(({filtersValue}) => filtersValue);
   const {current, movie, totalMovie} = useSelector(({movieListParametr}) => movieListParametr);
+  const {isLoaded} = useSelector(({loading}) => loading);
 
   React.useEffect (() => {
     dispatch(fetchMovies(current, type, genre, country, search))
@@ -53,38 +55,42 @@ function Main() {
   return (
     <div className='main-wrapper'>
       <div className='main-empty'></div>
-      <Filters 
-      genresArr={genresValue} 
-      countryArr={countryValue}
-      typeMovie={type} genre={genre}
-      type={type} country={country}
-      setTypeMovie={onSelectType}
-      setGenreMovie={onSelectGenre}
-      setCountryMovie={onSelectCountry}
-      />
-      {movie.length !== 0 
-        ? <div className='main'>
-          {movie.map(item => 
-          <Link  to={`films/${item.kinopoiskId}`}
-            key={`${item.kinopoiskId}_${item.year}`}
-            >
-            <FilmCartMenu onClickid={onClickid}
-              nameRu={item.nameRu}
-              nameOriginal={item.nameOriginal}
-              genres={genresArray(item.genres)}
-              poster={item.posterUrlPreview}
-              ratingKinopoisk={item.ratingKinopoisk}
-              type={item.type}
-              id={item.kinopoiskId}/>
-          </Link>)}
+      {isLoaded
+        ?<div>
+          <Filters 
+            genresArr={genresValue} 
+            countryArr={countryValue}
+            typeMovie={type} genre={genre}
+            type={type} country={country}
+            setTypeMovie={onSelectType}
+            setGenreMovie={onSelectGenre}
+            setCountryMovie={onSelectCountry}
+            />
+          {movie.length !== 0 
+            ? <div className='main'>
+              {movie.map(item => 
+              <Link  to={`films/${item.kinopoiskId}`}
+                key={`${item.kinopoiskId}_${item.year}`}
+                >
+                <FilmCartMenu onClickid={onClickid}
+                  nameRu={item.nameRu}
+                  nameOriginal={item.nameOriginal}
+                  genres={genresArray(item.genres)}
+                  poster={item.posterUrlPreview}
+                  ratingKinopoisk={item.ratingKinopoisk}
+                  type={item.type}
+                  id={item.kinopoiskId}/>
+              </Link>)}
+            </div>
+            : <MainNone/>}
+          
+          {totalMovie>20 && movie.length !== 0
+            ? <Pagination className='pagination'
+            current={current} onChange={onSelectCurrent} total={totalMovie} 
+            defaultPageSize={20} showSizeChanger={false}/>
+            : ''}
         </div>
-        : <MainNone/>}
-      
-      {totalMovie>20 && movie.length !== 0
-      ? <Pagination className='pagination'
-      current={current} onChange={onSelectCurrent} total={totalMovie} 
-      defaultPageSize={20} showSizeChanger={false}/>
-      : ''}
+        : <LoadingBlock/>}
       <div className='main-empty-footer'></div>
     </div>
   )

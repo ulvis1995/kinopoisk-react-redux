@@ -1,7 +1,7 @@
 import './App.css';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import  Header from './components/Header/Header';
+import Header from './components/Header/Header.jsx';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import MoviePage from './components/MoviePage/MoviePage';
