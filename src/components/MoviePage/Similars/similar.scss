@@ -48,7 +48,7 @@
   height: 375px;
 }
 
-.film-slider .previous, .film-slider .next {
+.film-slider-similar .previous, .film-slider-similar .next {
   cursor: pointer;
   position: absolute;
   width: auto;
@@ -63,12 +63,12 @@
   text-shadow: 6px 0 3px black;
 }
 
-.film-slider .next {
+.film-slider-similar .next {
   right: 0;
   border-radius: 3px 0 0 3px;
 }
 
-.film-slider .next:hover,
-.film-slider .previous:hover {
+.film-slider-similar .next:hover,
+.film-slider-similar .previous:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }

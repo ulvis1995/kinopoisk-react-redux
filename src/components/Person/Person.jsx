@@ -1,58 +1,155 @@
-import React from 'react';
-import './person.scss'
+import React, { useState, useEffect, useCallback } from 'react';
+import MainNone from '../Main/MainNone';
+import staffInfo from './loadPerson';
+import './person.scss';
+import { Link } from 'react-router-dom';
+import { Table } from 'antd';
+import { useDispatch} from 'react-redux';
+import { setMovieId } from '../../redux/actions/movieId';
 
-function Person() {
+
+function Person({staffId}) {
+  const dispatch = useDispatch();
+  const [personInfo, setPerson] = useState ();
+  const [staffs, setShowStaff] = useState(false);
+
+  const onClickStaff = () => {
+    setShowStaff(staffs ? false : true);
+  };
+
+  const dataSource = personInfo?.films?.map ((item, index) => {
+    return item = {
+      key: index,
+      numder: index + 1,
+      profession: item.professionKey,
+      raiting: item.rating ? item.rating : '-',
+      name: item
+    }
+  })
+
+  const columns = [
+    {
+      title: 'N',
+      dataIndex: 'numder',
+      key: 'numder',
+    },
+    {
+      title: 'Статус',
+      dataIndex: 'profession',
+      key: 'profession',
+    },
+    {
+      title: 'Райтинг',
+      dataIndex: 'raiting',
+      key: 'raiting',
+    },
+    {
+      title: 'Название проекта',
+      dataIndex: 'name',
+      key: 'name',
+      render: (_, data) => {
+        const onClick = (id) => {
+          dispatch(setMovieId(id))
+        }
+        return <Link to={{pathname: `/films/${data.name.filmId}`}}
+                    className='item-name'
+                    onClick={() => onClick(data.name.filmId)}>
+                  {`${data.name.nameRu ? data.name.nameRu : '' }
+                    ${data.name.nameRu && data.name.nameEn ? ' / ' : ''}
+                    ${data.name.nameEn ? data.name.nameEn : ''}`}
+                </Link>}
+    },
+  ];
+
+  const pagination = {
+    defaultPageSize: 20,
+    showSizeChanger: false
+  };
+
+  const loadStaff = async () => {
+    const staff = await staffInfo (staffId);
+    setPerson(staff);
+  };
+  
+  useEffect (() => {
+    loadStaff()
+  }, [staffId]);
+
   return (
     <div className='person-page-wrapper'>
-    <div className='person-page-empty'></div>
-    <div className='person-page-main'>
-      <div className='person-page' >
-        <div className='person-page-image-block'>
-          <img className='person-page-img' src={`https://kinopoiskapiunofficial.tech/images/actor_posters/kp/10096.jpg`}
-            alt={`Изображение: ${`Винс Гиллиган`}`} width='320px' />
-            <div className='person-page-info'>
-              <p className='person-page-name'>{`nameRu`}/{`nameEn`}</p>
-              <p className='person-page-profession'>{`profession`}</p>
-            </div>
-        </div>
-        <div className='person-page-textcontent'>
-          <div className='person-about'>
-            <div className='person-about-item'>
-              <p>Дата рождения: </p>
-              <span>{`1965-04-04`}</span>
-            </div>
-            {/* если есть дата смерти указать условия высвечивания данной строки */}
-            {<div className='person-about-item'>
-              <p>Дата смерти: </p>
-              <span>{`1965-04-04`}</span>
-            </div>}
-            {
-              // если есть дата смерти, то вычислить разницу, если нет, то текущая дата минус дата рождения 
+      <div className='person-page-empty'></div>
+      {personInfo ? <div className='person-page-main'>
+        <div className='person-page' >
+          <div className='person-page-image-block'>
+            <img className='person-page-img' src={personInfo.posterUrl}
+              alt={`Изображение: ${personInfo.nameEn}`} width='320px' />
+              <div className='person-page-info'>
+                <p className='person-page-name'>
+                  {personInfo.nameRu}
+                  {personInfo.nameRu && personInfo.nameEn ? '/' : null}
+                  {personInfo.nameEn}
+                </p>
+                <p className='person-page-profession'>{personInfo.profession}</p>
+              </div>
+          </div>
+          <div className='person-page-textcontent'>
+            <div className='person-about'>
               <div className='person-about-item'>
-              <p>Возраст: </p>
-              <span>{`1965-04-04`}</span>
-            </div>}
-            <div className='person-about-item'>
-              <p>Рост: </p>
-              <span>{`174`}</span>
+                <p>Дата рождения: </p>
+                <span>{new Date(personInfo.birthday).toLocaleDateString()}</span>
+              </div>
+              {personInfo.death 
+                ?<div className='person-about-item'>
+                  <p>Дата смерти: </p>
+                  <span>{new Date(personInfo.death).toLocaleDateString()}</span>
+                </div>
+                : ''}
+              {<div className='person-about-item'>
+                <p>Возраст: </p>
+                <span>{
+                  personInfo.death 
+                    ? personInfo.age 
+                    : new Date().getYear() - new Date (personInfo.birthday).getYear()}
+                </span>
+              </div>}
+              {personInfo.growth 
+                ?<div className='person-about-item'>
+                  <p>Рост: </p>
+                  <span>{personInfo.growth}</span>
+                </div>
+                : ''}
+              {personInfo.birthplace 
+                ?<div className='person-about-item'>
+                  <p>Место рождения: </p>
+                  <span>{personInfo.birthplace}</span>
+                </div>
+                : ''}
+              {personInfo.facts>0
+                ?<div className='person-about-item'>
+                  <p>Интересные факты: </p>
+                  <span>{personInfo.facts}</span>
+                </div>
+                : ''}
             </div>
-            <div className='person-about-item'>
-              <p>Место рождения: </p>
-              <span>{`Манхэттэн, Нью-Йорк, США`}</span>
-            </div>
-            <div className='person-about-item'>
-              <p>Интересные факты: </p>
-              <span>{`Полное имя - Роберт Джон Дауни младший (Robert John Downey Jr.).`}</span>
-            </div>
-          </div>
-          <div className='person-films'>
-            <p>Фильмы</p>
           </div>
         </div>
+        <div className='person-films'>
+            <div className='person-films-start'>
+              <p>Участие в фильмах</p>
+              {staffs === false 
+                ?<button className='button button-down' onClick={onClickStaff}>&#10094;</button>
+                :<button className='button button-up' onClick={onClickStaff}>&#10094;</button>}
+            </div>
+            {staffs
+              ?<Table dataSource={dataSource} columns={columns}
+                  pagination={pagination}
+                  className='award-table'/>
+              : ''}
+          </div>
       </div>
+      : <MainNone/>}
+      <div className='person-page-empty-footer'></div>
     </div>
-    <div className='person-page-empty-footer'></div>
-  </div>
   )
 }
 

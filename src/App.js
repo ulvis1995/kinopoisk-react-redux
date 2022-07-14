@@ -1,27 +1,31 @@
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
-import { useState } from 'react';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import  Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import MoviePage from './components/MoviePage/MoviePage';
 import Person from "./components/Person/Person";
+import Top from './components/Top/Top';
+import Premieres from './components/Premieres/Premieres';
 
 function App() {
-  const [idFilm, setIdFilm] = useState();
-
-  const handleId = (id) => {
-    setIdFilm(id)
-  }
+  const {id} = useSelector(({movieId}) => movieId);
+  const {staffId} = useSelector(({infoAboutFilm}) => infoAboutFilm);
+  const {activeLink} = useSelector(({header}) => header);
 
   return (
     <div className="App">
       <Header />
       <div className='content'>
         <Routes>
-          <Route path='/' element={<Main handleId={handleId}/>} exact/>
-          <Route path={`/films/${idFilm}`} element={<MoviePage idFilm={idFilm} handleId={handleId}/>} exact/>
-          {/* <Route path={`/staff/${idPerson}`} element={<Person/>} exact/> */}
+          <Route path='/' element={<Main />} exact/>
+          <Route path={`/films/${id}`} element={<MoviePage />} exact/>
+          <Route path={`/staff/${staffId}`} element={<Person staffId={staffId}/>} exact/>
+          <Route path={activeLink} 
+            element={activeLink !== `/premieres` 
+            ? <Top activeLink={activeLink}/>
+            : <Premieres activeLink={activeLink}/>}/>
         </Routes>
       </div>
       <Footer />

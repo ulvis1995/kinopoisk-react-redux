@@ -5,7 +5,7 @@ import './filmCartMenu.scss'
 function FilmCartMenu({id, nameRu, nameOriginal, poster, ratingKinopoisk, genres, type, onClickid}) {
   const returnId = () => {
     const idFilm = id
-    onClickid(idFilm);
+    return onClickid(idFilm);
   }
   return (
     <div className='film-cart-menu' data-type={type} id={id}

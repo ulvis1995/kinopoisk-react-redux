@@ -2,9 +2,12 @@ import { Link } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import FilmCartMenu from '../../Film-cart-menu/FilmCartMenu';
 import similar from './similar';
-import './similar.scss'
+import './similar.scss';
+import { useDispatch} from 'react-redux';
+import { setMovieId } from '../../../redux/actions/movieId';
 
-function Similars({idFilm, handleId, more}) {
+function Similars({id, movieAbout}) {  
+  const dispatch = useDispatch();
   const [similarShow, setShowAw] = useState(false);
   const [similars, setSimilar] = useState ([]);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -19,9 +22,9 @@ function Similars({idFilm, handleId, more}) {
       : (activeIndex + 2 === similars.length ? 0 : activeIndex + 2);
 
   const loadSimilars = async () => {
-    const similars = await similar (idFilm);
-    setSimilar (similars);
-  }
+    const similars = await similar (id);
+    setSimilar(similars);
+  };
   
   const onClicknextSlide = () => {
     setActiveIndex(activeIndex+1 === similars.length - 1 ? 0 : activeIndex + 1)
@@ -33,31 +36,35 @@ function Similars({idFilm, handleId, more}) {
 
   useEffect (() => {
     loadSimilars()
-  }, [more, similarShow, idFilm]);
+  }, [ movieAbout, similarShow]);
 
   const onClickSimilar = () => {
     setShowAw(similarShow ? false : true);
   }
 
+  const onClickid = React.useCallback ((id) => {
+    dispatch(setMovieId(id))
+  }, [similarShow]);
+
   return (
-    similars.length > 0
-    ? <div className='film-similar'>
-      <div className='film-similar-start'><p>Похожее</p>
-          {similarShow === false 
-            ?<button className='button button-down' onClick={onClickSimilar}>&#10094;</button>
-            :<button className='button button-up' onClick={onClickSimilar}>&#10094;</button>}
-          </div>
+    <div className='film-similar'>
+      <div className='film-similar-start'>
+        <p>Похожее</p>
+        {similarShow === false 
+          ?<button className='button button-down' onClick={onClickSimilar}>&#10094;</button>
+          :<button className='button button-up' onClick={onClickSimilar}>&#10094;</button>}
+      </div>
       {similarShow 
         ?<div className='film-item film-slider-similar'>
           {similars.length>3 
-            ?<a className="previous" onClick={onClickpreviousSlide}>&#10094;</a> 
-            : ''}
+           ?<a className="previous" onClick={onClickpreviousSlide}>&#10094;</a> 
+           : ''}
           {similars.length>3 
             ?<Link  to={{pathname: `/films/${similars[prevplusImgIndex].filmId}`}}
               key={prevplusImgIndex} className='film-slider-link'
               >
               <FilmCartMenu
-                onClickid={handleId}
+                onClickid={onClickid}
                 className='film-similar-block'
                 nameRu={similars[prevplusImgIndex].nameRu}
                 nameOriginal={similars[prevplusImgIndex].nameOriginal}
@@ -69,7 +76,7 @@ function Similars({idFilm, handleId, more}) {
             key={prevImgIndex} className='film-slider-link'
             >
             <FilmCartMenu
-              onClickid={handleId}
+              onClickid={onClickid}
               className='film-similar-block'
               nameRu={similars[prevImgIndex].nameRu}
               nameOriginal={similars[prevImgIndex].nameOriginal}
@@ -80,7 +87,7 @@ function Similars({idFilm, handleId, more}) {
             key={activeIndex} className='film-slider-link'
             >
             <FilmCartMenu
-              onClickid={handleId}
+              onClickid={onClickid}
               className='film-similar-block'
               nameRu={similars[activeIndex].nameRu}
               nameOriginal={similars[activeIndex].nameOriginal}
@@ -91,7 +98,7 @@ function Similars({idFilm, handleId, more}) {
             key={nextImgIndex} className='film-slider-link'
             >
             <FilmCartMenu
-              onClickid={handleId}
+              onClickid={onClickid}
               className='film-similar-block'
               nameRu={similars[nextImgIndex].nameRu}
               nameOriginal={similars[nextImgIndex].nameOriginal}
@@ -103,7 +110,7 @@ function Similars({idFilm, handleId, more}) {
               key={nextplusImgIndex} className='film-slider-link'
               >
               <FilmCartMenu
-                onClickid={handleId}
+                onClickid={onClickid}
                 className='film-similar-block'
                 nameRu={similars[nextplusImgIndex].nameRu}
                 nameOriginal={similars[nextplusImgIndex].nameOriginal}
@@ -117,7 +124,6 @@ function Similars({idFilm, handleId, more}) {
         </div>
         : ''}
       </div>
-    : ''
   )
 };
 
