@@ -6,7 +6,6 @@ const initialState = {
   awardShow: false,
   awardsFilm: [],
   budget: [],
-  staffId: null
 };
 
 const infoAboutFilm = (state = initialState, action) => {
@@ -45,11 +44,6 @@ const infoAboutFilm = (state = initialState, action) => {
       return {
         ...state,
         budget: action.payload,
-    };
-    case 'SET_STAFF_ID':
-      return {
-        ...state,
-        staffId: action.payload,
     };
     default:
       return state;

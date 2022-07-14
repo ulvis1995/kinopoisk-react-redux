@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './budget.scss'
-import budgetMovie from './budgetLoad';
+import budgetMovie from '../../../apiData/budgetLoad';
 
 function Budget({id, movieAbout}) {
   const [budget, setBox] = useState([]);

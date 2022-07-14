@@ -6,6 +6,7 @@ import movieId from "./movieId";
 import infoAboutFilm from "./infoAboutFilm";
 import top from "./top";
 import header from "./header";
+import premieres from "./premieres";
 
 const rootReducer = combineReducers({
   filters,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   movieId,
   infoAboutFilm,
   top,
-  header
+  header,
+  premieres,
 });
 
 export default rootReducer;

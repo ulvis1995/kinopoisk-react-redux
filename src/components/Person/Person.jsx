@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import MainNone from '../Main/MainNone';
-import staffInfo from './loadPerson';
-import './person.scss';
-import { Link } from 'react-router-dom';
-import { Table } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { useDispatch} from 'react-redux';
+import { Link } from 'react-router-dom';
+
+import './person.scss';
+import MainNone from '../Main/MainNone';
+import staffInfo from '../../apiData/loadPerson';
+
 import { setMovieId } from '../../redux/actions/movieId';
+
+import { Table } from 'antd';
+import PersonTextcontent from './PersonTextcontent';
 
 
 function Person({staffId}) {
@@ -92,46 +96,7 @@ function Person({staffId}) {
                 <p className='person-page-profession'>{personInfo.profession}</p>
               </div>
           </div>
-          <div className='person-page-textcontent'>
-            <div className='person-about'>
-              <div className='person-about-item'>
-                <p>Дата рождения: </p>
-                <span>{new Date(personInfo.birthday).toLocaleDateString()}</span>
-              </div>
-              {personInfo.death 
-                ?<div className='person-about-item'>
-                  <p>Дата смерти: </p>
-                  <span>{new Date(personInfo.death).toLocaleDateString()}</span>
-                </div>
-                : ''}
-              {<div className='person-about-item'>
-                <p>Возраст: </p>
-                <span>{
-                  personInfo.death 
-                    ? personInfo.age 
-                    : new Date().getYear() - new Date (personInfo.birthday).getYear()}
-                </span>
-              </div>}
-              {personInfo.growth 
-                ?<div className='person-about-item'>
-                  <p>Рост: </p>
-                  <span>{personInfo.growth}</span>
-                </div>
-                : ''}
-              {personInfo.birthplace 
-                ?<div className='person-about-item'>
-                  <p>Место рождения: </p>
-                  <span>{personInfo.birthplace}</span>
-                </div>
-                : ''}
-              {personInfo.facts>0
-                ?<div className='person-about-item'>
-                  <p>Интересные факты: </p>
-                  <span>{personInfo.facts}</span>
-                </div>
-                : ''}
-            </div>
-          </div>
+        <PersonTextcontent personInfo={personInfo}/>
         </div>
         <div className='person-films'>
             <div className='person-films-start'>
@@ -151,6 +116,6 @@ function Person({staffId}) {
       <div className='person-page-empty-footer'></div>
     </div>
   )
-}
+};
 
-export default Person
+export default Person;

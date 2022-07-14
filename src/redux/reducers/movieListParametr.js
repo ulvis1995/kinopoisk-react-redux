@@ -2,9 +2,6 @@ const initialState = {
   movie: [],
   current: 1,
   totalMovie: 400,
-  premieres: [],
-  pagePrem: 1,
-  totalPremiers: 200,
 };
 
 const movieListParametr = (state = initialState, action) => {

@@ -1,6 +1,8 @@
 import React from 'react';
+
 import { filterMonth, filterYear } from './filterArray';
 import '../Main/main.scss';
+
 import { Select } from 'antd';
 const { Option } = Select;
 
@@ -26,10 +28,6 @@ function FiltersPremier({setMonth, setYear, year, month}) {
       <Select className='main-select-item'
         showSearch value={year}
         optionFilterProp="children"
-        // filterOption={(input, option) => option.children.includes(input)}
-        // filterSort={(optionA, optionB) =>
-        //   optionA.children.toLowerCase().localeCompare(optionB.children.toLowerCase())
-        // }
         placeholder="Год премьеры" allowClear
         onChange={handleChangeYear}
         onClear={()=> handleChangeYear(null)}

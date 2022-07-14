@@ -1,7 +1,9 @@
 import React from 'react';
-import '../Main/main.scss';
-import { Select } from 'antd';
+
 import { filterType } from './filterArray';
+import '../Main/main.scss';
+
+import { Select } from 'antd';
 const { Option } = Select;
 
 function Filters({genresArr, countryArr, setTypeMovie, setGenreMovie, 

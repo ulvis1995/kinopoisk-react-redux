@@ -1,12 +1,15 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
+import './top.scss';
 import FilmCartMenu from '../Film-cart-menu/FilmCartMenu';
 import genresArray from "../../functions/array";
+
 import { setMovieId } from '../../redux/actions/movieId';
-import './top.scss';
-import { Pagination } from 'antd';
 import { fetchTop, setPageTop } from '../../redux/actions/top';
+
+import { Pagination } from 'antd';
 
 function Top({activeLink}) {
   const dispatch = useDispatch();  

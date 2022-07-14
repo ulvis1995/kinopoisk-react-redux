@@ -1,6 +1,7 @@
 import React from 'react';
-import './slider.scss';
 import { useDispatch, useSelector} from 'react-redux';
+
+import './slider.scss';
 import { fetchSliderImage, setSliderIndex } from '../../../redux/actions/infoAboutFilm';
 
 

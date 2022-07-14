@@ -27,3 +27,8 @@ export const fetchMoviePage = (id) => (dispatch) => {
         dispatch(setMoviePage(data))
       })
 };
+
+export const setStaffId = (staffId) => ({
+  type: 'SET_STAFF_ID',
+  payload: staffId,
+});

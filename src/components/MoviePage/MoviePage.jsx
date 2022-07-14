@@ -1,11 +1,13 @@
 import React from 'react';
+
 import './moviePage.scss';
 import genresArray from "../../functions/array";
-import countryArray from '../../functions/arrayCountre';
 import MovieFilmAbout from './MovieFilmAbout';
+import MoviePageStats from './MoviePageStats/MoviePageStats'
 
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMoviePage } from '../../redux/actions/movieId';
+import MoviePageRating from './MoviePageRating/MoviePageRating';
 
 function MoviePage() {
   const dispatch = useDispatch();
@@ -29,24 +31,7 @@ function MoviePage() {
               </div>
           </div>
           <div className='movie-page-textcontent'>
-            <div className='movie-rating'>
-              {moviePage.ratingKinopoisk 
-                ? <div className='movie-rating-item'>
-                  <p>{moviePage.ratingKinopoisk}</p>
-                  <span>{moviePage.ratingKinopoiskVoteCount} оценки</span>
-                </div>
-                : <div className='movie-rating-item'>
-                    <p>Рейтинг отсутствует</p>
-                  </div>}
-              {moviePage.ratingImdb 
-                ? <div className='movie-rating-item'>
-                    <p>{moviePage.ratingImdb} imdb</p>
-                    <span>{moviePage.ratingImdbVoteCount} оценки</span>
-                  </div>
-                : <div className='movie-rating-item'>
-                    <p>Рейтинг отсутствует</p>
-                  </div>}    
-            </div>
+            <MoviePageRating moviePage={moviePage}/>
             <h2 className='slogan'>{moviePage.slogan}</h2>
             <div className='movie-description'>
               <p>{(moviePage.description === null && moviePage.editorAnnotation === null )
@@ -55,37 +40,7 @@ function MoviePage() {
                         ${moviePage.editorAnnotation !== null ? moviePage.editorAnnotation : ''}`}
               </p>
             </div>
-            <div className='movie-stats'>
-              <div className='movie-stats-item'>
-                <span>Тип</span>
-                <p>{moviePage.type}</p>
-              </div>
-              <div className='movie-stats-item'>
-                <span>Страна</span>
-                <p>{countryArray(moviePage.countries)}</p>
-              </div>
-              {moviePage.ratingAgeLimits !== null
-                ? <div className='movie-stats-item'>
-                    <span>Ценз</span>
-                    <p>{moviePage.ratingAgeLimits}</p>
-                  </div>
-                : ''}
-              {moviePage.type === 'FILM' 
-                ?<div className='movie-stats-item'>
-                  <span>Год выпуска</span>
-                  <p>{moviePage.year}</p>
-                </div>
-                : ''}
-              {moviePage.type === ('TV_SERIES' || 'TV_SHOW' || 'MINI_SERIES') 
-                ?<div className='movie-stats-item'>
-                  <span>Годы выпуска</span>
-                  <p>{moviePage.startYear}-{moviePage.endYear ? moviePage.endYear : ''}</p>
-                </div>
-                : <div className='movie-stats-item'>
-                    <span>Длительность</span>
-                    <p>{moviePage.filmLength !== null ? moviePage.filmLength : '-'}</p>
-                  </div>}
-            </div>
+            <MoviePageStats moviePage={moviePage}/>
           </div>
         </div>
         <MovieFilmAbout id={id} typeFilm={moviePage.type}/>
