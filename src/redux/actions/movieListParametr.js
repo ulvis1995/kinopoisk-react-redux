@@ -17,7 +17,16 @@ export const setTotalMovie = (totalMovie) => ({
   payload: totalMovie,
 });
 
+export const setLoaded = (payload) => ({
+  type: 'SET_LOADED',
+  payload
+})
+
 export const fetchMovies = (current, type, genre, country, search) => (dispatch) => {
+  dispatch({
+    type: 'SET_LOADED',
+    payload: false,
+  });
 
   axios.get(
     `${urlFilms}/films?page=${current}&type=${type ? type : ''}&genres=${genre ? genre : ''}&countries=${country ? country : ''}&keyword=${search ? search : ''}`,

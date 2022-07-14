@@ -2,6 +2,7 @@ const initialState = {
   movie: [],
   current: 1,
   totalMovie: 400,
+  isLoaded: false,
 };
 
 const movieListParametr = (state = initialState, action) => {
@@ -10,6 +11,7 @@ const movieListParametr = (state = initialState, action) => {
       return {
         ...state,
         movie: action.payload,
+        isLoaded: true
       };
     case 'PAGE_NUMBER':
       return {
@@ -36,6 +38,11 @@ const movieListParametr = (state = initialState, action) => {
       ...state,
       totalPremiers: action.payload,
     };
+    case 'SET_LOADED':
+      return {
+        ...state,
+        isLoaded: action.payload,
+      };
     default:
       return state;
   };

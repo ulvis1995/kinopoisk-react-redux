@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import './App.css';
-import Header from './components/Header/Header.jsx';
+import Header from './components/Header/Header.jsx'
 import Main from './components/Main/Main';
 import Footer from './components/Footer/Footer';
 import MoviePage from './components/MoviePage/MoviePage';

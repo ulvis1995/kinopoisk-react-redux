@@ -2,7 +2,7 @@ const initialState = {
   id: null,
   moviePage: [],
   movieAbout: false,
-  staffId: null
+  staffId: null,
 };
 
 const movieId = (state = initialState, action) => {
