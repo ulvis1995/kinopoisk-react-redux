@@ -13,11 +13,12 @@ import { fetchPremiers, setPremPage } from '../../redux/actions/premieres';
 import { setMovieId } from '../../redux/actions/movieId';
 
 import { Pagination } from 'antd';
+import LoadingBlock from '../LoadingBlock/LoadingBlock';
 
 function Premieres({activeLink}) {
   const dispatch = useDispatch();
   const {month, year} = useSelector(({filters}) => filters);
-  const {premieres, pagePrem, totalPremiers} = useSelector (({premieres}) => premieres);
+  const {premieres, pagePrem, totalPremiers, isLoaded} = useSelector (({premieres}) => premieres);
 
   const premieresArr = []
   for (let i=0; i < premieres.length; i+=20) {
@@ -47,34 +48,38 @@ function Premieres({activeLink}) {
   return (
     <div className='main-wrapper'>
     <div className='main-empty'></div>
-    <FiltersPremier
-    setMonth={onSelectMonth}
-    setYear={onSelectYear}
-    month={month} year={year}
-    />
-    {premieres.length !== 0 
-      ? <div className='main'>
-        {premieresArr[pagePrem-1].map(item => 
-        <Link  to={`/films/${item.kinopoiskId}`}
-          key={item.kinopoiskId+item.year}
-          >
-          <FilmCartMenu onClickid={onClickid}
-            nameRu={item.nameRu}
-            nameOriginal={item.nameOriginal}
-            genres={genresArray(item.genres)}
-            poster={item.posterUrlPreview}
-            ratingKinopoisk={item.ratingKinopoisk}
-            type={item.type}
-            id={item.kinopoiskId}/>
-        </Link>)}
+    {isLoaded
+      ?<div>
+        <FiltersPremier
+        setMonth={onSelectMonth}
+        setYear={onSelectYear}
+        month={month} year={year}
+        />
+        {premieres.length !== 0 
+          ? <div className='main'>
+            {premieresArr[pagePrem-1].map(item => 
+            <Link  to={`/films/${item.kinopoiskId}`}
+              key={item.kinopoiskId+item.year}
+              >
+              <FilmCartMenu onClickid={onClickid}
+                nameRu={item.nameRu}
+                nameOriginal={item.nameOriginal}
+                genres={genresArray(item.genres)}
+                poster={item.posterUrlPreview}
+                ratingKinopoisk={item.ratingKinopoisk}
+                type={item.type}
+                id={item.kinopoiskId}/>
+            </Link>)}
+          </div>
+          : <MainNone/>}
+        
+        {totalPremiers>20 && premieres.length !== 0
+        ? <Pagination className='pagination'
+        current={pagePrem} onChange={onSelectCurrent} total={totalPremiers} 
+        defaultPageSize={20} showSizeChanger={false}/>
+        : ''}
       </div>
-      : <MainNone/>}
-    
-    {totalPremiers>20 && premieres.length !== 0
-    ? <Pagination className='pagination'
-    current={pagePrem} onChange={onSelectCurrent} total={totalPremiers} 
-    defaultPageSize={20} showSizeChanger={false}/>
-    : ''}
+      : <LoadingBlock/>}
     <div className='main-empty-footer'></div>
   </div>
   )

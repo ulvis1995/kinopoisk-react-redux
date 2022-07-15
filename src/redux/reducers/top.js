@@ -2,6 +2,7 @@ const initialState = {
   topList: [],
   page: 1,
   totalTop: 250,
+  isLoaded: false,
 };
 
 const top = (state = initialState, action) => {
@@ -15,6 +16,7 @@ const top = (state = initialState, action) => {
     return {
       ...state,
       topList: action.payload,
+      isLoaded: true
     };
     case 'TOP_TOTAL':
     return {

@@ -2,6 +2,7 @@ const initialState = {
   premieres: [],
   pagePrem: 1,
   totalPremiers: 200,
+  isLoaded: false,
 };
 
 const premieres = (state = initialState, action) => {
@@ -10,6 +11,7 @@ const premieres = (state = initialState, action) => {
     return {
       ...state,
       premieres: action.payload,
+      isLoaded: true
     };
     case 'PAGE_NUMBER_PREMIER':
     return {

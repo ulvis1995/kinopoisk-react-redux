@@ -17,7 +17,16 @@ export const setTotalTop = (totalTop) => ({
   payload: totalTop,
 });
 
+export const setLoaded = (payload) => ({
+  type: 'SET_LOADED',
+  payload
+})
+
 export const fetchTop = (page, nameTop) => (dispatch) => {
+  dispatch({
+    type: 'SET_LOADED',
+    payload: false,
+  });
 
   axios.get(
     `${urlFilms}/films/top?type=${nameTop}&page=${page}`,
