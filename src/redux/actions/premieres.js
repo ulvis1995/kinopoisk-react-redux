@@ -17,9 +17,19 @@ export const setTotalPrem = (totalPremiers) => ({
   payload: totalPremiers,
 });
 
+export const setLoaded = (payload) => ({
+  type: 'SET_LOADED',
+  payload
+})
+
 export const fetchPremiers = (year, month) => (dispatch) => {
   const monthNow = new Date().toLocaleString('en', { month: 'long' }).toLocaleUpperCase();
-  const yearNow = new Date ().getFullYear()
+  const yearNow = new Date ().getFullYear();
+
+  dispatch({
+    type: 'SET_LOADED',
+    payload: false,
+  });
 
   axios.get(`${urlFilms}/films/premieres?year=${year ? year : yearNow}&month=${month ? month : monthNow}`,
     {headers: {
